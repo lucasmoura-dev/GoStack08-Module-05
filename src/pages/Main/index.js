@@ -18,7 +18,11 @@ export default class Main extends Component {
   };
 
   handleInputChange = e => {
-    this.setState({ newRepo: e.target.value });
+    this.setState({
+      newRepo: e.target.value,
+      error: false,
+      errorMessage: '',
+    });
   };
 
   // Carregar os dados do localstorage
