@@ -14,6 +14,7 @@ export default class Main extends Component {
     repositories: [],
     loading: false,
     error: false,
+    errorMessage: '',
   };
 
   handleInputChange = e => {
@@ -41,7 +42,6 @@ export default class Main extends Component {
   containsRepository(repository) {
     const { repositories } = this.state;
     let contains = repositories.find(r => r.name === repository);
-    console.log(contains);
     if (contains) {
       return true;
     }
@@ -57,7 +57,7 @@ export default class Main extends Component {
 
     try {
       if (this.containsRepository(newRepo)) {
-        throw new Error('Duplicated repository');
+        throw new Error('Repositório duplicado');
       }
       const response = await api.get(`/repos/${newRepo}`);
       const data = {
@@ -69,15 +69,20 @@ export default class Main extends Component {
         loading: false,
       });
     } catch (exception) {
+      let errorMessage = 'Repositório não encontrado';
+      if (!exception.isAxiosError) {
+        errorMessage = exception.message;
+      }
       this.setState({
         loading: false,
         error: true,
+        errorMessage,
       });
     }
   };
 
   render() {
-    const { newRepo, repositories, loading, error } = this.state;
+    const { newRepo, repositories, loading, error, errorMessage } = this.state;
 
     return (
       <Container>
@@ -87,21 +92,26 @@ export default class Main extends Component {
         </h1>
 
         <Form onSubmit={this.handleSubmit} error={error}>
-          <input
-            type="text"
-            placeholder="Adicionar repositório"
-            value={newRepo}
-            onChange={this.handleInputChange}
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="Adicionar repositório"
+              value={newRepo}
+              onChange={this.handleInputChange}
+            />
 
-          <SubmitButton loading={loading}>
-            {loading ? (
-              <FaSpinner color="#FFF" size={14} />
-            ) : (
-              <FaPlus color="#FFF" size={14} />
-            )}
-          </SubmitButton>
+            <SubmitButton loading={loading}>
+              {loading ? (
+                <FaSpinner color="#FFF" size={14} />
+              ) : (
+                <FaPlus color="#FFF" size={14} />
+              )}
+            </SubmitButton>
+          </div>
+
+          <small>{error && errorMessage}</small>
         </Form>
+
         <List>
           {repositories.map(repository => (
             <li key={repository.name}>

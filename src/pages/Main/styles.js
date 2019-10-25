@@ -2,21 +2,28 @@ import styled, { keyframes, css } from 'styled-components';
 
 export const Form = styled.form`
   margin-top: 30px;
-  display: flex;
-  flex-direction: row;
 
-  input {
-    flex: 1;
-    border: 1px solid #eee;
-    padding: 10px 15px;
-    border-radius: 4px;
-    font-size: 16px;
+  div {
+    display: flex;
+    flex-direction: row;
 
-    ${props =>
-      props.error &&
-      css`
-        border-color: red;
-      `}
+    input {
+      flex: 1;
+      border: 1px solid #eee;
+      padding: 10px 15px;
+      border-radius: 4px;
+      font-size: 16px;
+
+      ${props =>
+        props.error &&
+        css`
+          border-color: red;
+        `}
+    }
+  }
+
+  small {
+    color: red;
   }
 `;
 
