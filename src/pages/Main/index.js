@@ -38,6 +38,16 @@ export default class Main extends Component {
     }
   }
 
+  containsRepository(repository) {
+    const { repositories } = this.state;
+    let contains = repositories.find(r => r.name === repository);
+    console.log(contains);
+    if (contains) {
+      return true;
+    }
+    return false;
+  }
+
   handleSubmit = async e => {
     e.preventDefault();
 
@@ -46,6 +56,9 @@ export default class Main extends Component {
     const { newRepo, repositories } = this.state;
 
     try {
+      if (this.containsRepository(newRepo)) {
+        throw new Error('Duplicated repository');
+      }
       const response = await api.get(`/repos/${newRepo}`);
       const data = {
         name: response.data.full_name,
