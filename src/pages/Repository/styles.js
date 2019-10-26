@@ -51,13 +51,36 @@ export const IssueHeader = styled.div`
   justify-content: left;
 `;
 
+export const IssueFooter = styled.div`
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+`;
+
+export const PaginationButton = styled.button.attrs(props => ({
+  type: 'button',
+  disabled: props.disabled,
+}))`
+  background: transparent;
+  border: solid 1px #7159c1;
+  padding: 10px 15px;
+  color: #7159c1;
+  background: #fff;
+  border-radius: 4px;
+
+  & + & {
+    margin-left: 5px;
+  }
+`;
+
 export const IssueState = styled.select`
   background: #fff;
   border-radius: 4px;
   font-size: 16px;
-  border: 1px solid #eee;
+  border: 1px solid #7159c1;
   padding: 10px 15px;
   flex: 0;
+  color: #7159c1;
 `;
 
 export const IssueList = styled.ul`

@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 import api from '../../services/api';
 
 import Container from '../../components/Container';
-import { Loading, Owner, IssueList, IssueHeader, IssueState } from './styles';
+import {
+  Loading,
+  Owner,
+  IssueList,
+  IssueHeader,
+  IssueState,
+  IssueFooter,
+  PaginationButton,
+} from './styles';
 
 export default class Repository extends Component {
   static propTypes = {
@@ -98,6 +106,10 @@ export default class Repository extends Component {
             </li>
           ))}
         </IssueList>
+        <IssueFooter>
+          <PaginationButton>Anterior</PaginationButton>
+          <PaginationButton>Próximo</PaginationButton>
+        </IssueFooter>
       </Container>
     );
   }
