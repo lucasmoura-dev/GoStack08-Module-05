@@ -19,32 +19,44 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    repositoryState: 'open',
+    repoName: '',
+  };
+
+  async loadIssues() {
+    const { repoName, repositoryState } = this.state;
+
+    const issues = await api.get(`/repos/${repoName}/issues`, {
+      params: {
+        state: repositoryState,
+        per_page: 5,
+      },
+    });
+    this.setState({ issues: issues.data });
+  }
+
+  handleRepositoryState = async e => {
+    this.setState({ repositoryState: e.target.value });
+    await this.loadIssues();
   };
 
   async componentDidMount() {
     const { match } = this.props;
     const repoName = decodeURIComponent(match.params.repository);
 
-    // Fazer duas requisições ao mesmo tempo
-    const [repository, issues] = await Promise.all([
-      await api.get(`/repos/${repoName}`),
-      await api.get(`/repos/${repoName}/issues`, {
-        params: {
-          state: 'open',
-          per_page: 5,
-        },
-      }),
-    ]);
+    const repository = await api.get(`/repos/${repoName}`);
 
     this.setState({
       repository: repository.data,
-      issues: issues.data,
       loading: false,
+      repoName: repoName,
     });
+
+    this.loadIssues();
   }
 
   render() {
-    const { repository, issues, loading } = this.state;
+    const { repository, issues, loading, repositoryState } = this.state;
 
     if (loading) {
       return <Loading>Carregando</Loading>;
@@ -60,10 +72,13 @@ export default class Repository extends Component {
         </Owner>
 
         <IssueHeader>
-          <IssueState>
-            <option>Open</option>
-            <option>Closed</option>
-            <option>All</option>
+          <IssueState
+            onChange={this.handleRepositoryState}
+            value={repositoryState}
+          >
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="all">All</option>
           </IssueState>
         </IssueHeader>
 
