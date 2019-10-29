@@ -66,7 +66,7 @@ export default class Repository extends Component {
   };
 
   handleRepositoryState = async e => {
-    this.setState({ repositoryState: e.target.value });
+    this.setState({ repositoryState: e.target.value, page: 1 });
     await this.loadIssues();
   };
 
