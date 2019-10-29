@@ -12,6 +12,7 @@ import {
   IssueState,
   IssueFooter,
   PaginationButton,
+  PageCount,
 } from './styles';
 
 export default class Repository extends Component {
@@ -29,19 +30,39 @@ export default class Repository extends Component {
     loading: true,
     repositoryState: 'open',
     repoName: '',
+    page: 1,
+    hasNextPage: false,
+    hasPrevPage: false,
   };
 
   async loadIssues() {
-    const { repoName, repositoryState } = this.state;
-
-    const issues = await api.get(`/repos/${repoName}/issues`, {
+    const { repoName, repositoryState, page } = this.state;
+    let url = `/repos/${repoName}/issues?page=${page}`;
+    const issues = await api.get(url, {
       params: {
         state: repositoryState,
         per_page: 5,
       },
     });
-    this.setState({ issues: issues.data });
+    let hasNextPage =
+      issues.headers.link && issues.headers.link.includes('next');
+    this.setState({ issues: issues.data, hasNextPage });
   }
+
+  handlePrevPage = async e => {
+    const { page } = this.state;
+    if (page <= 1) {
+      return;
+    }
+    this.setState({ page: page - 1 });
+    await this.loadIssues();
+  };
+
+  handleNextPage = async e => {
+    const { page } = this.state;
+    this.setState({ page: page + 1 });
+    await this.loadIssues();
+  };
 
   handleRepositoryState = async e => {
     this.setState({ repositoryState: e.target.value });
@@ -64,7 +85,14 @@ export default class Repository extends Component {
   }
 
   render() {
-    const { repository, issues, loading, repositoryState } = this.state;
+    const {
+      repository,
+      issues,
+      loading,
+      repositoryState,
+      page,
+      hasNextPage,
+    } = this.state;
 
     if (loading) {
       return <Loading>Carregando</Loading>;
@@ -107,8 +135,16 @@ export default class Repository extends Component {
           ))}
         </IssueList>
         <IssueFooter>
-          <PaginationButton>Anterior</PaginationButton>
-          <PaginationButton>Próximo</PaginationButton>
+          <PaginationButton onClick={this.handlePrevPage} disabled={page <= 1}>
+            Anterior
+          </PaginationButton>
+          <PageCount>{page}</PageCount>
+          <PaginationButton
+            onClick={this.handleNextPage}
+            disabled={!hasNextPage}
+          >
+            Próximo
+          </PaginationButton>
         </IssueFooter>
       </Container>
     );

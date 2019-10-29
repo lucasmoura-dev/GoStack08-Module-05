@@ -57,6 +57,15 @@ export const IssueFooter = styled.div`
   justify-content: center;
 `;
 
+export const PageCount = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  color: #666;
+  line-height: 1.4;
+  text-align: center;
+`;
+
 export const PaginationButton = styled.button.attrs(props => ({
   type: 'button',
   disabled: props.disabled,
@@ -67,6 +76,17 @@ export const PaginationButton = styled.button.attrs(props => ({
   color: #7159c1;
   background: #fff;
   border-radius: 4px;
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+    border: 0;
+  }
+
+  &:hover {
+    background: #7159c1;
+    color: #fff;
+  }
 
   & + & {
     margin-left: 5px;
