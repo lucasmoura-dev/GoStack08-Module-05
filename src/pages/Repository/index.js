@@ -38,11 +38,13 @@ export default class Repository extends Component {
 
   async loadIssues() {
     const { repoName, repositoryState, page } = this.state;
-    let url = `/repos/${repoName}/issues?page=${page}`;
+    console.log(page);
+    let url = `/repos/${repoName}/issues`;
     const issues = await api.get(url, {
       params: {
         state: repositoryState,
         per_page: 5,
+        page,
       },
     });
     let hasNextPage =
@@ -50,18 +52,14 @@ export default class Repository extends Component {
     this.setState({ issues: issues.data, hasNextPage });
   }
 
-  handlePrevPage = async e => {
+  handlePage = async action => {
     const { page } = this.state;
-    if (page <= 1) {
+    if (page <= 1 && action !== 'next') {
       return;
     }
-    this.setState({ page: page - 1 });
-    await this.loadIssues();
-  };
-
-  handleNextPage = async e => {
-    const { page } = this.state;
-    this.setState({ page: page + 1 });
+    await this.setState({
+      page: action === 'next' ? page + 1 : page - 1,
+    });
     await this.loadIssues();
   };
 
@@ -140,12 +138,15 @@ export default class Repository extends Component {
           ))}
         </IssueList>
         <IssueFooter>
-          <PaginationButton onClick={this.handlePrevPage} disabled={page <= 1}>
+          <PaginationButton
+            onClick={() => this.handlePage('back')}
+            disabled={page <= 1}
+          >
             Anterior
           </PaginationButton>
           <PageCount>{page}</PageCount>
           <PaginationButton
-            onClick={this.handleNextPage}
+            onClick={() => this.handlePage('next')}
             disabled={!hasNextPage}
           >
             Próximo
