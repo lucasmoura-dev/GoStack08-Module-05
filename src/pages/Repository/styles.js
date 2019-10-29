@@ -88,7 +88,7 @@ export const PaginationButton = styled.button.attrs(props => ({
     border: 0;
   }
 
-  &:hover {
+  &:not([disabled]):hover {
     background: #7159c1;
     color: #fff;
   }
