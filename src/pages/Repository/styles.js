@@ -15,9 +15,14 @@ export const Owner = styled.div`
   flex-direction: column;
   align-items: center;
 
+  div {
+    display: flex;
+    width: 100%;
+  }
+
   a {
     color: #7159c1;
-    font-size: 16px;
+    font-size: 20px;
     text-decoration: none;
   }
 
