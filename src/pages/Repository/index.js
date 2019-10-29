@@ -29,7 +29,7 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
-    repositoryState: 'open',
+    repositoryState: 'all',
     repoName: '',
     page: 1,
     hasNextPage: false,
@@ -117,9 +117,9 @@ export default class Repository extends Component {
             onChange={this.handleRepositoryState}
             value={repositoryState}
           >
-            <option value="open">Open</option>
-            <option value="closed">Closed</option>
-            <option value="all">All</option>
+            <option value="all">Todas</option>
+            <option value="open">Abertas</option>
+            <option value="closed">Fechadas</option>
           </IssueState>
         </IssueHeader>
 
