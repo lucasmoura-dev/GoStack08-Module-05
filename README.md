@@ -1,5 +1,5 @@
 # GoStack Challenge 05
-> Objective: Create a simple application using ReactJS (with Styled Components) using the GitHub API to save a list of repositories and their respectives issues. [See full requirements](https://github.com/Rocketseat/bootcamp-gostack-desafio-05")
+> Objective: Create a simple application using ReactJS (with Styled Components) using the GitHub API to save a list of repositories and their respectives issues. [See full requirements](https://github.com/Rocketseat/bootcamp-gostack-desafio-05)
 
 Used tools:
 - ReactJS;
