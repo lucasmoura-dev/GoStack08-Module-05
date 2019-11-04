@@ -38,7 +38,6 @@ export default class Repository extends Component {
 
   async loadIssues() {
     const { repoName, repositoryState, page } = this.state;
-    console.log(page);
     let url = `/repos/${repoName}/issues`;
     const issues = await api.get(url, {
       params: {
